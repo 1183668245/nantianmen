@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>南天门空间作战计划</title>
+  <link rel="icon" type="image/webp" href="./素材/logo.webp" />
+  <link rel="apple-touch-icon" href="./素材/logo.webp" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;600;700&family=Noto+Serif+SC:wght@600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+<body>
+  <div class="page-shell">
+    <header class="topbar">
+      <div class="brand">
+        <img class="brand-logo" src="./素材/logo.webp" alt="南天门席位战争 Logo" />
+        <div>
+          <div class="brand-title">南天门计划</div>
+          <div class="brand-sub">东方科幻前线</div>
+        </div>
+      </div>
+
+      <nav class="nav">
+        <a href="#hero">首页</a>
+        <a href="#seats">战区</a>
+        <button id="openBlindBoxModalBtn" type="button" class="nav-modal-btn">能量盲盒</button>
+        <button id="openMyModalBtn" type="button" class="nav-modal-btn">我的</button>
+        <a href="#rules">作战守则</a>
+      </nav>
+
+      <div class="topbar-actions">
+        <button id="contractInfoBtn" class="ghost-btn">合约信息</button>
+        <button id="connectWalletBtn" class="primary-btn">连接钱包</button>
+      </div>
+    </header>
+
+    <main>
+      <section id="hero" class="hero">
+        <div class="hero-copy">
+          <p class="eyebrow">穹顶之上，种下东方月光</p>
+          <h1><span class="hero-title-line">南天门计划</span></h1>
+          <p class="hero-text">
+            百席争夺已启，舰队正穿越云海与星轨。进入战区，占领你的席位；开启能量盲盒，接收未知回响。
+          </p>
+          <p class="hero-note">鸾鸟母舰前线开放中 · 三大战区同步争夺</p>
+          <div class="hero-actions">
+            <a href="#seats" class="link-btn hero-skin-btn hero-skin-btn-1">进入战区</a>
+            <button id="heroBlindBoxBtn" type="button" class="link-btn hero-skin-btn hero-skin-btn-2">开启能量盲盒</button>
+          </div>
+        </div>
+
+        <div class="hero-stats hero-metrics">
+          <div class="hero-metric-card">
+            <div class="hero-metric-icon hero-metric-icon-bnb">
+              <img src="./素材/按钮/BNB.webp" alt="BNB 池图标" />
+            </div>
+            <div class="hero-metric-divider"></div>
+            <div class="hero-metric-copy">
+              <span>前线 BNB 池</span>
+              <strong id="heroBnbPool">--</strong>
+              <em>链上状态实时同步</em>
+            </div>
+          </div>
+          <div class="hero-metric-card">
+            <div class="hero-metric-icon hero-metric-icon-energy">
+              <img src="./素材/按钮/能量池.webp" alt="能量池图标" />
+            </div>
+            <div class="hero-metric-divider"></div>
+            <div class="hero-metric-copy">
+              <span>当前能量池</span>
+              <strong id="heroBlindBoxPool">--</strong>
+              <em>盲盒能量持续汇聚</em>
+            </div>
+          </div>
+          <div class="hero-metric-card">
+            <div class="hero-metric-icon hero-metric-icon-seat">
+              <img src="./素材/按钮/占位.webp" alt="占位进度图标" />
+            </div>
+            <div class="hero-metric-divider"></div>
+            <div class="hero-metric-copy">
+              <span>战位占领进度</span>
+              <strong id="heroOccupiedSeats">-- / 100</strong>
+              <em>百席争夺持续推进</em>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="seats" class="section is-intro">
+        <div class="section-head">
+          <div>
+            <p class="eyebrow">战区</p>
+            <h2>百席已启，三大战区进入争夺阶段</h2>
+          </div>
+          <div class="seat-filters">
+            <button class="chip active" data-filter="all">全部战区</button>
+            <button class="chip" data-filter="core">核心指挥区</button>
+            <button class="chip" data-filter="mid">突防作战区</button>
+            <button class="chip" data-filter="outer">巡天警戒区</button>
+            <button class="chip" data-filter="available">仅看可抢</button>
+            <button class="chip" data-filter="mine">仅看我的</button>
+          </div>
+        </div>
+
+        <div id="seatsOverview" class="seats-overview">
+          <div id="seatsOverviewStage" class="seats-overview-stage">
+            <picture>
+              <source media="(max-width: 768px)" srcset="./素材/移动端战区.webp" />
+              <img class="seats-overview-image" src="./素材/网页端战区.webp" alt="战区总览图" />
+            </picture>
+            <div class="seats-scene-copy">
+              <p class="seats-scene-eyebrow">战区</p>
+              <h2>百席已启，三大战区进入争夺阶段</h2>
+            </div>
+            <button class="seats-hotspot seats-hotspot-core" data-enter-zone="core" aria-label="进入核心指挥区">核心指挥区</button>
+            <button class="seats-hotspot seats-hotspot-mid" data-enter-zone="mid" aria-label="进入突防作战区">突防作战区</button>
+            <button class="seats-hotspot seats-hotspot-outer" data-enter-zone="outer" aria-label="进入巡天警戒区">巡天警戒区</button>
+            <div id="seatsEnterFx" class="seats-enter-fx hidden" aria-hidden="true">
+              <div class="seats-enter-beam"></div>
+              <div class="seats-enter-scan"></div>
+              <div class="seats-enter-ring"></div>
+              <div class="seats-enter-copy"><span>正在进入战区</span><strong id="seatsEnterText">核心指挥区</strong></div>
+            </div>
+          </div>
+        </div>
+
+        <div id="seatsCardsView" class="hidden">
+          <div class="seats-summary card soft-card">
+            <div><span>战区代币</span><strong id="tokenMetaText">--</strong></div>
+            <div><span>当前筛选</span><strong id="seatFilterText">全部战位</strong></div>
+            <div><span>最新可读状态</span><strong id="lastUpdatedText">--</strong></div>
+          </div>
+
+          <div id="seatsGrid" class="seats-grid"></div>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="section-head">
+          <div>
+            <p class="eyebrow">动态战报</p>
+            <h2>实时夺位记录</h2>
+          </div>
+          <span class="section-tip">每一次夺位，都会在南天门前线留下痕迹</span>
+        </div>
+        <div id="recentRecords" class="records-list card"></div>
+      </section>
+
+      <section id="blindbox" class="section two-col">
+        <div class="card">
+          <p class="eyebrow">能量波动</p>
+          <h2>能量盲盒</h2>
+          <p class="section-text">
+            开启未知能量回响，获得奖励、折扣、增益与铭刻。
+          </p>
+
+          <div class="metric-row">
+            <div class="metric-card">
+              <span>盲盒价格</span>
+              <strong id="blindBoxPriceText">100000 NTM</strong>
+            </div>
+            <div class="metric-card">
+              <span>当前能量池</span>
+              <strong id="blindBoxPoolText">--</strong>
+            </div>
+          </div>
+
+          <div class="inline-actions">
+            <button id="buyBlindBoxBtn" class="primary-btn">购买盲盒</button>
+            <button id="openPoolInfoBtn" class="ghost-btn">奖池说明</button>
+          </div>
+        </div>
+
+        <div id="my" class="card">
+          <p class="eyebrow">个人面板</p>
+          <h2>我的</h2>
+          <div id="myPanel" class="my-panel"></div>
+          <div class="inline-actions">
+            <button id="claimBtn" class="primary-btn">领取奖励</button>
+            <button id="openBackpackBtn" class="ghost-btn">打开背包</button>
+          </div>
+        </div>
+      </section>
+
+      <section id="rules" class="section">
+        <div class="section-head">
+          <div>
+            <p class="eyebrow">法则摘要</p>
+            <h2>作战守则</h2>
+          </div>
+          <button id="openRulesBtn" class="ghost-btn">查看完整守则</button>
+        </div>
+
+        <div class="rules-grid">
+          <article class="card soft-card">
+            <h3>战位争夺</h3>
+            <p>战位被占后 30 分钟内不可抢，超时后可再次发起夺位。</p>
+          </article>
+          <article class="card soft-card">
+            <h3>撤离机制</h3>
+            <p>主动退出 ≤60 分钟退 80%，超过 60 分钟退 95%。</p>
+          </article>
+          <article class="card soft-card">
+            <h3>能量盲盒</h3>
+            <p>每次 10 万代币，部分进入能量池，奖励全部先进背包。</p>
+          </article>
+          <article class="card soft-card">
+            <h3>奖励结算</h3>
+            <p>通过夺位、盲盒、背包与领取操作参与整个循环。</p>
+          </article>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer card">
+      <div class="footer-copy">
+        <strong>免责说明</strong>
+        <p>本页面为链上交互界面，所有结果以链上合约最终状态为准。数字资产存在波动与操作风险，请谨慎参与。</p>
+        <div class="footer-socials">
+          <a class="footer-social-link" href="https://x.com/your_project" target="_blank" rel="noopener noreferrer">Twitter</a>
+          <a class="footer-social-link" href="https://t.me/your_project" target="_blank" rel="noopener noreferrer">Telegram</a>
+        </div>
+      </div>
+      <div class="footer-links">
+        <button id="footerContractBtn" class="text-btn">合约信息</button>
+        <button id="refreshBtn" class="text-btn">立即刷新</button>
+      </div>
+    </footer>
+  </div>
+
+  <div id="statusToast" class="status-toast hidden"></div>
+
+  <div id="loadingOverlay" class="loading-overlay hidden">
+    <div class="loading-card card">
+      <div class="spinner"></div>
+      <strong id="loadingTitle">处理中</strong>
+      <p id="loadingText">请在钱包中确认，并等待链上返回结果。</p>
+    </div>
+  </div>
+
+  <div id="modalBackdrop" class="modal-backdrop hidden">
+    <div class="modal card">
+      <div class="modal-head">
+        <h3 id="modalTitle">详情</h3>
+        <button id="closeModalBtn" class="icon-btn">×</button>
+      </div>
+      <div id="modalBody" class="modal-body"></div>
+    </div>
+  </div>
+
+  <aside id="drawer" class="drawer">
+    <div class="drawer-head">
+      <div>
+        <p class="eyebrow">我的背包</p>
+        <h3>奖励 / 折扣 / 增益 / 铭刻</h3>
+      </div>
+      <button id="closeDrawerBtn" class="icon-btn">×</button>
+    </div>
+    <div class="drawer-tabs">
+      <button class="drawer-tab active" data-tab="rewards">奖励</button>
+      <button class="drawer-tab" data-tab="discounts">折扣</button>
+      <button class="drawer-tab" data-tab="buffs">增益</button>
+      <button class="drawer-tab" data-tab="marks">铭刻</button>
+    </div>
+    <div id="drawerContent" class="drawer-content"></div>
+  </aside>
+
+  <script src="https://cdn.jsdelivr.net/npm/ethers@6.13.4/dist/ethers.umd.min.js"></script>
+  <script src="./app.js" defer></script>
+</body>
+</html>

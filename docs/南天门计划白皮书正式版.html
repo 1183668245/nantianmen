@@ -1,0 +1,990 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>南天门计划</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700&family=Noto+Serif+SC:wght@400;600;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --ink: #18212f;
+      --text: #334155;
+      --muted: #64748b;
+      --line: #d9dee7;
+      --gold: #9b6b22;
+      --gold-soft: #d7b47c;
+      --paper: #ffffff;
+      --paper-2: #f7f8fb;
+      --navy: #0f2342;
+      --navy-2: #18325d;
+      --shadow: 0 18px 50px rgba(15, 23, 42, 0.08);
+    }
+
+    * { box-sizing: border-box; }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      background: #eef2f7;
+      color: var(--text);
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+      font-family: "Noto Sans SC", system-ui, sans-serif;
+      counter-reset: pageNum;
+    }
+
+    .document {
+      width: 210mm;
+      margin: 0 auto;
+      background: var(--paper);
+      box-shadow: 0 0 0 1px rgba(15, 23, 42, 0.04), 0 18px 60px rgba(15, 23, 42, 0.08);
+    }
+
+    .page {
+      position: relative;
+      min-height: auto;
+      padding: 16mm 16mm 14mm;
+      background:
+        radial-gradient(circle at top right, rgba(215, 180, 124, 0.08), transparent 26%),
+        linear-gradient(180deg, #ffffff, #fcfdff);
+      counter-increment: pageNum;
+    }
+
+    .page::after {
+      content: counter(pageNum);
+      position: absolute;
+      bottom: 8mm;
+      right: 16mm;
+      color: #8a93a4;
+      font-size: 11px;
+      letter-spacing: 0.08em;
+    }
+
+    .page-break {
+      margin-top: 14px;
+    }
+
+    .cover {
+      background:
+        linear-gradient(180deg, rgba(8, 19, 42, 0.88), rgba(14, 31, 58, 0.94)),
+        radial-gradient(circle at top right, rgba(255, 222, 163, 0.12), transparent 22%),
+        radial-gradient(circle at bottom left, rgba(113, 165, 255, 0.10), transparent 26%),
+        #0b1730;
+      color: #f7f3ea;
+      overflow: hidden;
+    }
+
+    .cover::before {
+      content: "";
+      position: absolute;
+      inset: 12mm;
+      border: 1px solid rgba(231, 200, 139, 0.14);
+      border-radius: 8mm;
+      pointer-events: none;
+    }
+
+    .cover::after {
+      content: "";
+      position: absolute;
+      top: 18mm;
+      right: 16mm;
+      width: 110mm;
+      height: 110mm;
+      background:
+        radial-gradient(circle, rgba(255, 223, 166, 0.14), transparent 58%),
+        conic-gradient(from 20deg, rgba(255,255,255,0.05), transparent, rgba(255,255,255,0.03), transparent);
+      opacity: 0.9;
+      filter: blur(1px);
+      border-radius: 50%;
+      pointer-events: none;
+    }
+
+    .cover-topline {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 12px;
+      letter-spacing: 0.32em;
+      text-transform: uppercase;
+      color: rgba(247, 241, 228, 0.72);
+      margin-top: 8mm;
+    }
+
+    .cover-topline::before,
+    .cover-topline::after {
+      content: "";
+      width: 28px;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(231, 200, 139, 0.7), transparent);
+    }
+
+    .cover-mark {
+      margin-top: 18mm;
+      width: 68px;
+      height: 68px;
+      border-radius: 18px;
+      display: grid;
+      place-items: center;
+      background: linear-gradient(180deg, rgba(255,255,255,0.08), rgba(255,255,255,0.03));
+      border: 1px solid rgba(231, 200, 139, 0.16);
+      box-shadow: 0 14px 34px rgba(0, 0, 0, 0.24);
+    }
+
+    .cover-mark svg {
+      width: 34px;
+      height: 34px;
+      fill: #f3d7a1;
+    }
+
+    .cover h1 {
+      margin: 16mm 0 0;
+      font-family: "Noto Serif SC", "Songti SC", serif;
+      font-size: 34px;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      color: #fffdfa;
+    }
+
+    .cover h2 {
+      margin: 4mm 0 0;
+      font-size: 15px;
+      font-weight: 500;
+      letter-spacing: 0.18em;
+      color: rgba(247, 241, 228, 0.78);
+    }
+
+    .cover-lead {
+      margin-top: 16mm;
+      max-width: 120mm;
+      font-size: 15px;
+      line-height: 1.95;
+      color: rgba(247, 241, 228, 0.86);
+    }
+
+    .cover-panel {
+      margin-top: 20mm;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      max-width: 150mm;
+    }
+
+    .cover-stat {
+      padding: 12px 12px 10px;
+      border-radius: 16px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.07), rgba(255,255,255,0.03));
+      border: 1px solid rgba(231, 200, 139, 0.14);
+    }
+
+    .cover-stat span {
+      display: block;
+      font-size: 11px;
+      color: rgba(247, 241, 228, 0.64);
+      margin-bottom: 4px;
+    }
+
+    .cover-stat strong {
+      display: block;
+      font-size: 20px;
+      color: #fff8eb;
+      font-weight: 700;
+    }
+
+    .cover-meta {
+      position: static;
+      margin-top: 16mm;
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      flex-wrap: wrap;
+      color: rgba(247, 241, 228, 0.62);
+      font-size: 12px;
+    }
+
+    .cover .page-no {
+      display: none;
+    }
+
+    .cover.page::after {
+      content: "";
+    }
+
+    .toc-title,
+    .section-title {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 8mm;
+    }
+
+    .section-title-badge {
+      width: 28px;
+      height: 28px;
+      border-radius: 999px;
+      display: grid;
+      place-items: center;
+      font-size: 12px;
+      font-weight: 700;
+      color: #fff;
+      background: linear-gradient(180deg, var(--gold-soft), var(--gold));
+      box-shadow: 0 8px 18px rgba(155, 107, 34, 0.22);
+      flex: none;
+    }
+
+    h2 {
+      margin: 0;
+      font-family: "Noto Serif SC", serif;
+      font-size: 22px;
+      color: var(--ink);
+      letter-spacing: 0.02em;
+    }
+
+    h3 {
+      margin: 9mm 0 4mm;
+      font-size: 15px;
+      color: #1f2937;
+      font-weight: 700;
+    }
+
+    p {
+      margin: 0 0 4.5mm;
+      line-height: 1.92;
+      font-size: 14px;
+    }
+
+    .lead {
+      font-size: 15px;
+      color: #243244;
+    }
+
+    .muted {
+      color: var(--muted);
+    }
+
+    .divider {
+      height: 1px;
+      background: linear-gradient(90deg, rgba(155,107,34,0.28), rgba(217,222,231,0.9), transparent);
+      margin: 6mm 0 7mm;
+    }
+
+    .toc-list {
+      margin: 8mm 0 0;
+      padding: 0;
+      list-style: none;
+      display: grid;
+      gap: 8px;
+    }
+
+    .toc-list li {
+      display: grid;
+      grid-template-columns: auto 1fr auto;
+      gap: 10px;
+      align-items: center;
+      padding: 10px 12px;
+      border-radius: 14px;
+      background: linear-gradient(180deg, #fbfcfe, #f6f8fb);
+      border: 1px solid var(--line);
+      font-size: 14px;
+    }
+
+    .toc-no {
+      color: var(--gold);
+      font-weight: 700;
+      font-size: 12px;
+      letter-spacing: 0.08em;
+    }
+
+    .toc-dots {
+      height: 1px;
+      background: repeating-linear-gradient(90deg, transparent, transparent 4px, #cfd6e2 4px, #cfd6e2 8px);
+      opacity: 0.7;
+    }
+
+    .icon-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin: 7mm 0 8mm;
+    }
+
+    .icon-card {
+      padding: 14px 14px 12px;
+      border-radius: 16px;
+      background: linear-gradient(180deg, #fbfcfe, #f5f8fc);
+      border: 1px solid var(--line);
+      box-shadow: var(--shadow);
+    }
+
+    .icon {
+      width: 42px;
+      height: 42px;
+      border-radius: 12px;
+      display: grid;
+      place-items: center;
+      background: linear-gradient(180deg, rgba(155,107,34,0.12), rgba(155,107,34,0.05));
+      margin-bottom: 10px;
+    }
+
+    .icon svg {
+      width: 22px;
+      height: 22px;
+      fill: var(--gold);
+    }
+
+    .icon-card h4 {
+      margin: 0 0 6px;
+      font-size: 14px;
+      color: var(--ink);
+    }
+
+    .icon-card p {
+      margin: 0;
+      font-size: 12px;
+      line-height: 1.8;
+      color: var(--muted);
+    }
+
+    .quote-box {
+      margin: 7mm 0;
+      padding: 6mm 6mm 5mm;
+      border-radius: 16px;
+      border: 1px solid #ead8b7;
+      background: linear-gradient(180deg, #fffdf9, #faf6ee);
+      color: #4b5563;
+    }
+
+    .quote-box strong {
+      color: var(--gold);
+    }
+
+    .table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 6mm 0 8mm;
+      font-size: 13px;
+    }
+
+    .table th,
+    .table td {
+      border: 1px solid var(--line);
+      padding: 3.4mm 3.6mm;
+      vertical-align: top;
+      text-align: left;
+      line-height: 1.75;
+    }
+
+    .table th {
+      background: #f6f8fb;
+      color: var(--ink);
+      font-weight: 700;
+    }
+
+    .table td strong {
+      color: var(--ink);
+    }
+
+    .flow {
+      margin: 7mm 0;
+      padding: 7mm 6mm;
+      border-radius: 18px;
+      background: linear-gradient(180deg, #f8fafc, #f4f7fb);
+      border: 1px solid var(--line);
+    }
+
+    .flow-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .flow-step {
+      padding: 10px 14px;
+      border-radius: 999px;
+      background: #fff;
+      border: 1px solid var(--line);
+      color: var(--ink);
+      font-size: 13px;
+      font-weight: 500;
+    }
+
+    .flow-arrow {
+      color: var(--gold);
+      font-weight: 700;
+      font-size: 16px;
+    }
+
+    .note {
+      margin-top: 4mm;
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    ul {
+      margin: 0 0 4.5mm 1.2em;
+      padding: 0;
+    }
+
+    li {
+      margin-bottom: 2.2mm;
+      line-height: 1.85;
+      font-size: 14px;
+    }
+
+    .summary-box {
+      margin-top: 8mm;
+      padding: 7mm 7mm 6mm;
+      border-radius: 18px;
+      background:
+        linear-gradient(180deg, rgba(15,35,66,0.96), rgba(24,50,93,0.96));
+      color: #eef4ff;
+      box-shadow: 0 16px 36px rgba(15, 35, 66, 0.16);
+    }
+
+    .summary-box h3 {
+      color: #fff;
+      margin-top: 0;
+    }
+
+    .summary-box p,
+    .summary-box li {
+      color: rgba(238, 244, 255, 0.86);
+    }
+
+    .footer-note {
+      margin-top: 14mm;
+      padding-top: 5mm;
+      border-top: 1px solid var(--line);
+      color: #8b95a7;
+      font-size: 12px;
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    @page {
+      size: A4;
+      margin: 12mm;
+    }
+
+    @media print {
+      body {
+        background: #fff;
+      }
+      .document {
+        width: auto;
+        margin: 0;
+        box-shadow: none;
+      }
+      .page {
+        min-height: 297mm;
+        padding: 18mm 16mm 18mm;
+        page-break-after: always;
+      }
+      .cover-meta {
+        position: absolute;
+        left: 16mm;
+        right: 16mm;
+        bottom: 18mm;
+        margin-top: 0;
+        flex-wrap: nowrap;
+      }
+      .page-break {
+        page-break-before: always;
+        margin-top: 0;
+      }
+      .page:last-child {
+        page-break-after: auto;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="document">
+    <section class="page cover">
+      <div class="cover-topline">Whitepaper</div>
+
+      <div class="cover-mark">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M12 2l7 4v12l-7 4-7-4V6l7-4zm0 2.3L7 7v10l5 2.7 5-2.7V7l-5-2.7zm0 1.8l3.8 2.1v4.3L12 14.6 8.2 12.5V8.2L12 6.1z"/>
+        </svg>
+      </div>
+
+      <h1>南天门计划</h1>
+      <h2>项目白皮书</h2>
+
+      <p class="cover-lead">
+        南天门计划是一套围绕两大核心玩法构建的链上竞争系统：其一是有限席位争夺形成的战位机制，其二是围绕概率成长展开的能量盲盒玩法。
+        项目并不以静态持币叙事为核心，而是通过位置竞争与盲盒成长，形成长期可参与、可判断、可演化的玩法结构。
+      </p>
+
+      <div class="cover-panel">
+        <div class="cover-stat">
+          <span>核心席位</span>
+          <strong>100</strong>
+        </div>
+        <div class="cover-stat">
+          <span>战区层级</span>
+          <strong>3</strong>
+        </div>
+        <div class="cover-stat">
+          <span>成长路径</span>
+          <strong>双核心</strong>
+        </div>
+      </div>
+
+      <div class="cover-meta">
+        <span>项目名称：南天门计划</span>
+        <span>文档版本：V1.0</span>
+        <span>类型：机制白皮书</span>
+      </div>
+    </section>
+
+    <section class="page page-break">
+      <div class="toc-title">
+        <div class="section-title-badge">目录</div>
+        <h2>Contents</h2>
+      </div>
+      <div class="divider"></div>
+
+      <ul class="toc-list">
+        <li><span class="toc-no">01</span><span>项目概述与机制定位</span><span class="toc-dots"></span></li>
+        <li><span class="toc-no">02</span><span>核心玩法一：战位机制</span><span class="toc-dots"></span></li>
+        <li><span class="toc-no">03</span><span>核心玩法二：能量盲盒机制</span><span class="toc-dots"></span></li>
+        <li><span class="toc-no">04</span><span>价值循环与玩家路径</span><span class="toc-dots"></span></li>
+        <li><span class="toc-no">05</span><span>项目总结</span><span class="toc-dots"></span></li>
+      </ul>
+
+      <div class="summary-box">
+        <h3>阅读提示</h3>
+        <p>
+          南天门计划的机制文档应围绕两大核心玩法展开：其一是战位机制，其二是能量盲盒玩法。
+          其它规则，例如价格递进、退出重置、奖项结构与成长路径，本质上都服务于这两条主线。
+        </p>
+      </div>
+    </section>
+
+    <section class="page page-break">
+      <div class="section-title">
+        <div class="section-title-badge">01</div>
+        <h2>项目概述与机制定位</h2>
+      </div>
+      <div class="divider"></div>
+
+      <p class="lead">
+        南天门计划并不是一枚单纯依赖买卖行为维持热度的代币项目，而是一套以战位机制与能量盲盒玩法为核心的机制型系统。
+      </p>
+      <p>
+        在南天门计划中，用户不是被动等待结果的持有者，而是持续做出选择的参与者。
+        用户需要决定自己是否进入战位、进入哪个战区、是否继续守位、何时退出，以及是否通过能量盲盒积累下一轮竞争所需的资源与优势。
+        项目的魅力并不来自单一动作，而来自两大核心玩法之间的持续联动。
+      </p>
+      <p>
+        整个系统围绕三个核心词展开：<strong>争夺、沉淀、成长</strong>。
+        争夺对应有限战位竞争，沉淀对应系统内部价值的持续积累，成长对应用户通过盲盒玩法不断强化后续竞争能力。
+      </p>
+
+      <div class="icon-grid">
+        <div class="icon-card">
+          <div class="icon">
+            <svg viewBox="0 0 24 24"><path d="M12 2l7 4v12l-7 4-7-4V6l7-4zm0 2.4L7 7v10l5 2.8 5-2.8V7l-5-2.6z"/></svg>
+          </div>
+          <h4>有限目标</h4>
+          <p>所有用户围绕同一组席位展开竞争，目标清晰，博弈集中。</p>
+        </div>
+        <div class="icon-card">
+          <div class="icon">
+            <svg viewBox="0 0 24 24"><path d="M13 2L4 14h6l-1 8 9-12h-6l1-8z"/></svg>
+          </div>
+          <h4>双路径参与</h4>
+          <p>战位争夺负责明牌竞争，能量盲盒负责暗牌成长。</p>
+        </div>
+        <div class="icon-card">
+          <div class="icon">
+            <svg viewBox="0 0 24 24"><path d="M19 7h-4V3H9v4H5v14h14V7zm-8-2h2v2h-2V5zm6 14H7V9h10v10z"/></svg>
+          </div>
+          <h4>延迟决策</h4>
+          <p>所有盲盒奖励先进背包，让获得与使用变成两次决策。</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="page page-break">
+      <div class="section-title">
+        <div class="section-title-badge">02</div>
+        <h2>核心玩法一：战位玩法</h2>
+      </div>
+      <div class="divider"></div>
+
+      <p>
+        南天门计划的目标不是构建一个单轮参与就结束的页面，而是构建一个可持续发生行为差异与策略差异的链上系统。
+        因此，机制设计强调以下几点：
+      </p>
+      <ul>
+        <li>固定数量席位，建立长期稳定的稀缺性。</li>
+        <li>区域分层结构，让不同层级用户都有清晰目标。</li>
+        <li>动态价格曲线，使席位热度能够被市场行为记录。</li>
+        <li>盲盒系统提供第二成长路径，避免单玩法衰减。</li>
+        <li>背包库存层延长奖励使用周期，增强资源管理感。</li>
+        <li>退出与再进入机制保证系统始终保持流动与重开机会。</li>
+      </ul>
+
+      <div class="quote-box">
+        <strong>机制定位：</strong>
+        南天门计划不是“买入后等待”的线性产品，而是“进入系统后持续配置资源、争夺位置、积累优势”的动态产品。
+      </div>
+    </section>
+
+    <section class="page page-break">
+      <div class="section-title">
+        <div class="section-title-badge">03</div>
+        <h2>核心玩法二：能量盲盒玩法</h2>
+      </div>
+      <div class="divider"></div>
+
+      <p>
+        百席争夺系统是南天门计划的主轴。系统将全部可竞争位置固定为 100 个战位，并按战略价值划分为三个战区。
+        这意味着项目不是围绕无限可复制的仓位展开，而是围绕有限且可竞争的目标展开。
+      </p>
+
+      <h3>3.1 战区划分</h3>
+      <table class="table">
+        <thead>
+          <tr>
+            <th>战区</th>
+            <th>编号</th>
+            <th>数量</th>
+            <th>初始价格</th>
+            <th>权重</th>
+            <th>业务定位</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>核心指挥区</strong></td>
+            <td>0 - 9</td>
+            <td>10</td>
+            <td>500 万代币</td>
+            <td>×5</td>
+            <td>最高等级战略区，象征性最强，进入门槛也最高</td>
+          </tr>
+          <tr>
+            <td><strong>突防作战区</strong></td>
+            <td>10 - 39</td>
+            <td>30</td>
+            <td>200 万代币</td>
+            <td>×2</td>
+            <td>中部主战场，是竞争最频繁、价值最平衡的区域</td>
+          </tr>
+          <tr>
+            <td><strong>巡天警戒区</strong></td>
+            <td>40 - 99</td>
+            <td>60</td>
+            <td>100 万代币</td>
+            <td>×1</td>
+            <td>基础参与层，为更广泛用户提供进入与成长起点</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h3>3.2 占领逻辑</h3>
+      <p>
+        当战位为空时，用户按该战区的初始价格完成占领；当战位已被占据时，新的挑战者需要按当前位置价格的更高标准发起争夺。
+        因此，席位本身并非静态资产，而是会随着竞争行为不断演化的动态竞争位。
+      </p>
+      <p>
+        这种设计使席位价格同时承担两种含义：一是进入成本，二是热度记录。越是被频繁争夺的位置，其价格越能体现市场对该位置的重视程度。
+      </p>
+
+      <h3>3.3 单地址限制</h3>
+      <p>
+        每个地址最多仅能占领一个战位。该规则的业务价值在于防止单一地址垄断多个位置，
+        并强制每位参与者将注意力集中在“当前最值得争夺的一席”上，从而提升整体博弈质量。
+      </p>
+
+      <h3>3.4 冷却的意义</h3>
+      <p>
+        冷却不是取消竞争，而是提高竞争质量。它为席位持有者提供最基础的稳定窗口，避免系统完全退化为纯手速型高频交互，
+        同时也让位置的“守住成本”与“争夺时机”变得更值得判断。
+      </p>
+    </section>
+
+    <section class="page page-break">
+      <div class="section-title">
+        <div class="section-title-badge">04</div>
+        <h2>价值循环与玩家路径</h2>
+      </div>
+      <div class="divider"></div>
+
+      <p>
+        南天门计划中的用户不会因为某一次竞争结果而被永久锁死。用户既可能在竞争中被替代，也可以主动退出当前席位。
+        这两条路径共同保证了席位与资源的再流动。
+      </p>
+      <p>
+        当原持有者被替代时，系统会围绕其原始进入成本进行对应结算；当用户主动退出时，席位将重新回到所属战区的起始状态。
+        其业务意义在于：
+      </p>
+      <ul>
+        <li>失败者不会彻底消失，而是可能再次回到循环。</li>
+        <li>高热席位不会永远停留在不可进入的价格区间。</li>
+        <li>用户拥有主动止盈、止损与重新布局的权利。</li>
+      </ul>
+
+      <div class="quote-box">
+        <strong>重置机制的本质：</strong>
+        让位置热度与进入机会处于长期可循环状态，而不是一次升高后永久固化。
+      </div>
+    </section>
+
+    <section class="page page-break">
+      <div class="section-title">
+        <div class="section-title-badge">05</div>
+        <h2>项目总结</h2>
+      </div>
+      <div class="divider"></div>
+
+      <p>
+        能量盲盒是南天门计划的第二条核心参与路径。如果说席位争夺是一种明牌竞争，那么盲盒成长就是暗牌成长。
+        它并不直接替代席位系统，而是为用户提供更灵活的资源积累方式。
+      </p>
+
+      <h3>5.1 每盒成本与代币流向</h3>
+      <p>
+        每次开启能量盲盒，用户支付 <strong>100000 NTM/盒</strong>。在当前机制中，每盒代币成本被拆分为两部分：
+      </p>
+      <ul>
+        <li>50000 NTM 进入能量池，用于形成系统内部的可变奖励来源。</li>
+        <li>50000 NTM 进入销毁路径，用于维持持续消耗逻辑。</li>
+      </ul>
+      <p>
+        因此，盲盒不是单向支出，而是将用户行为同时转化为“奖池沉淀”与“供给收缩”。
+      </p>
+
+      <h3>5.2 盲盒的业务作用</h3>
+      <ul>
+        <li>为尚未占领战位的用户提供成长入口。</li>
+        <li>为已有战位的用户提供强化守位和争夺效率的工具。</li>
+        <li>通过不确定结果提升情绪张力与参与频率。</li>
+        <li>让系统从纯位置博弈，延伸为位置与资源双重博弈。</li>
+      </ul>
+    </section>
+
+    <section class="page page-break">
+      <div class="section-title">
+        <div class="section-title-badge">06</div>
+        <h2>奖项类型、概率与作用</h2>
+      </div>
+      <div class="divider"></div>
+
+      <p>
+        能量盲盒的价值不只在“抽到多少”，更在“抽到什么”。奖项被划分为代币奖励、折扣券、临时增益、幸运暴击与永久铭刻五类。
+        这意味着盲盒既包含即时资源，也包含未来策略资源。
+      </p>
+
+      <table class="table">
+        <thead>
+          <tr>
+            <th>类别</th>
+            <th>奖项</th>
+            <th>概率</th>
+            <th>作用说明</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>代币奖励</td><td>10000 NTM</td><td>25%</td><td>补充再次参与的基础资源</td></tr>
+          <tr><td>代币奖励</td><td>30000 NTM</td><td>18%</td><td>增强持续参与与下一轮布局能力</td></tr>
+          <tr><td>代币奖励</td><td>80000 NTM</td><td>7%</td><td>接近购盒成本回收，提升中档奖励感知</td></tr>
+          <tr><td>代币奖励</td><td>200000 NTM</td><td>2%</td><td>高价值回报，强化抽取期待</td></tr>
+
+          <tr><td>折扣券</td><td>D80</td><td>18%</td><td>抢位溢价部分按 8 折计算</td></tr>
+          <tr><td>折扣券</td><td>D70</td><td>10%</td><td>抢位溢价部分按 7 折计算</td></tr>
+          <tr><td>折扣券</td><td>D60</td><td>5%</td><td>抢位溢价部分按 6 折计算</td></tr>
+          <tr><td>折扣券</td><td>D50</td><td>1.5%</td><td>抢位溢价部分按 5 折计算</td></tr>
+
+          <tr><td>临时增益</td><td>B10</td><td>6%</td><td>当前战位权重 +10%，持续 60 分钟</td></tr>
+          <tr><td>临时增益</td><td>B20</td><td>3%</td><td>当前战位权重 +20%，持续 60 分钟</td></tr>
+          <tr><td>临时增益</td><td>B30</td><td>2%</td><td>当前战位权重 +30%，持续 60 分钟</td></tr>
+          <tr><td>临时增益</td><td>B50</td><td>1%</td><td>当前战位权重 +50%，持续 30 分钟</td></tr>
+          <tr><td>临时增益</td><td>B100</td><td>0.3%</td><td>当前战位权重 +100%，持续 30 分钟</td></tr>
+
+          <tr><td>幸运暴击</td><td>能量池 30%</td><td>0.19%</td><td>直接获得当前能量池 30% 对应的代币奖励</td></tr>
+
+          <tr><td>永久铭刻</td><td>P5</td><td>0.008%</td><td>永久权重 +5%</td></tr>
+          <tr><td>永久铭刻</td><td>P8</td><td>0.0015%</td><td>永久权重 +8%</td></tr>
+          <tr><td>永久铭刻</td><td>P15</td><td>0.0004%</td><td>永久权重 +15%</td></tr>
+          <tr><td>永久铭刻</td><td>P25</td><td>1.0001%</td><td>永久权重 +25%</td></tr>
+        </tbody>
+      </table>
+
+      <div class="quote-box">
+        <strong>奖项设计逻辑：</strong>
+        代币奖励解决“能否继续参与”，折扣券与增益解决“如何更高效竞争”，永久铭刻解决“长期优势积累”，幸运暴击解决“玩法情绪张力”。
+      </div>
+    </section>
+
+    <section class="page page-break">
+      <div class="section-title">
+        <div class="section-title-badge">07</div>
+        <h2>个人背包</h2>
+      </div>
+      <div class="divider"></div>
+
+      <p>
+        南天门计划中，所有盲盒奖励都不是在抽取后直接立刻进入最终使用状态，而是统一先进入背包。
+        背包不是展示层，而是策略库存层。
+      </p>
+      <p>
+        这意味着用户的每次抽取获得的并不是一个即时消费结果，而是一项未来可选择的资源。
+        例如，折扣券是否立刻使用、临时增益是否保留到关键时段、代币奖励是否先留存，都会影响后续竞争路径。
+      </p>
+
+      <h3>7.1 背包的业务价值</h3>
+      <ul>
+        <li>让“获得奖励”与“使用奖励”分离。</li>
+        <li>将即时收益转化为未来决策权。</li>
+        <li>延长盲盒结果的生命周期与策略空间。</li>
+        <li>避免玩法退化为纯即时返奖模型。</li>
+      </ul>
+
+      <div class="flow">
+        <div class="flow-row">
+          <div class="flow-step">开启盲盒</div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-step">获得奖项</div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-step">进入背包</div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-step">判断时机</div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-step">领取或使用</div>
+        </div>
+        <div class="note">奖励先进背包，使玩家从“抽到什么”进一步升级为“何时使用什么”。</div>
+      </div>
+    </section>
+
+    <section class="page page-break">
+      <div class="section-title">
+        <div class="section-title-badge">08</div>
+        <h2>玩家成长路径</h2>
+      </div>
+      <div class="divider"></div>
+
+      <h3>8.1 争位型玩家</h3>
+      <p>
+        这类玩家主要围绕战位展开判断，核心关注点是位置价值、争夺成本、守位效率与退出时机。
+        其目标是通过更优位置建立自身在系统中的阶段性优势。
+      </p>
+
+      <h3>8.2 盲盒成长型玩家</h3>
+      <p>
+        这类玩家可能暂时不把即时占位作为首要目标，而是先通过盲盒积累代币、折扣券、增益与永久铭刻，
+        以便在未来某个更好的时间窗口进入高价值位置竞争。
+      </p>
+
+      <h3>8.3 混合策略型玩家</h3>
+      <p>
+        最完整的用户路径通常并非单一争位，也并非单一抽盒，而是两者结合。
+        用户在争位、退出、储备、使用资源之间来回切换，从而形成更高效的节奏与配置能力。
+      </p>
+
+      <div class="icon-grid">
+        <div class="icon-card">
+          <div class="icon">
+            <svg viewBox="0 0 24 24"><path d="M12 3l7 4v5c0 5-3.5 8-7 9-3.5-1-7-4-7-9V7l7-4z"/></svg>
+          </div>
+          <h4>守位路径</h4>
+          <p>围绕高价值位置建立阶段性优势，重视进攻与防守效率。</p>
+        </div>
+        <div class="icon-card">
+          <div class="icon">
+            <svg viewBox="0 0 24 24"><path d="M7 2h10l4 5-9 15L3 7l4-5zm1 2L6 7h12l-2-3H8z"/></svg>
+          </div>
+          <h4>积累路径</h4>
+          <p>先通过盲盒积累资源，再在更优时点转换为竞争力。</p>
+        </div>
+        <div class="icon-card">
+          <div class="icon">
+            <svg viewBox="0 0 24 24"><path d="M4 12a8 8 0 1014-4h-3l4-4 4 4h-3a12 12 0 11-4-8l-2 2A8 8 0 004 12z"/></svg>
+          </div>
+          <h4>循环路径</h4>
+          <p>在争位、退出、购盒与使用之间不断切换，形成长期节奏优势。</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="page page-break">
+      <div class="section-title">
+        <div class="section-title-badge">09</div>
+        <h2>价值循环结构</h2>
+      </div>
+      <div class="divider"></div>
+
+      <p>
+        南天门计划并非单向流出式模型，而是围绕“进入系统、形成竞争、产生沉淀、再进入竞争”构成循环。
+        整个系统的逻辑可以概括为：
+      </p>
+
+      <div class="flow">
+        <div class="flow-row">
+          <div class="flow-step">代币进入系统</div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-step">争位 / 购盒消耗</div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-step">部分沉淀 / 部分销毁</div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-step">奖励进入背包或待领取层</div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-step">再次配置资源</div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-step">重新进入竞争</div>
+        </div>
+      </div>
+
+      <p>
+        在这个过程中，价值并不会只停留在一个节点，而会在席位价格、能量池、背包库存与用户再次参与行为之间持续流动。
+        因此，系统的生命力来自持续行为，而不是一次性结果。
+      </p>
+    </section>
+
+    <section class="page page-break">
+      <div class="section-title">
+        <div class="section-title-badge">10</div>
+        <h2>持续性来源与总结</h2>
+      </div>
+      <div class="divider"></div>
+
+      <p>
+        南天门计划的持续性，不依赖单一高收益叙事，而依赖持续存在的决策差异。
+        只要系统中仍然存在位置稀缺、价格变化、资源积累与成长差异，用户就始终会有新的判断空间。
+      </p>
+
+      <ul>
+        <li>固定席位让竞争对象始终存在。</li>
+        <li>区域分层让不同阶段用户都有对应目标。</li>
+        <li>动态价格让热度可见，策略可判断。</li>
+        <li>盲盒系统让参与路径不被单一化。</li>
+        <li>战位竞争与盲盒成长持续互相驱动，形成双主线循环。</li>
+        <li>退出与重置让位置始终能够重新开放，系统保持活性。</li>
+      </ul>
+
+      <div class="summary-box">
+        <h3>总结</h3>
+        <p>
+          南天门计划本质上是一套“有限资源竞争系统”。它以战位机制构建明确的竞争舞台，以能量盲盒玩法构建持续的成长路径。
+          用户在其中面对的不是单一价格，而是位置；不是单一结果，而是节奏；不是单一收益，而是两大核心玩法之间的持续博弈。
+        </p>
+        <p>
+          真正重要的，不只是是否进入南天门，而是以怎样的方式进入、停留、退出并再次进入。
+        </p>
+      </div>
+
+      <div class="footer-note">
+        <span>南天门计划白皮书（成品版）</span>
+        <span>本文件用于项目机制与业务逻辑说明</span>
+      </div>
+    </section>
+  </div>
+</body>
+</html>
